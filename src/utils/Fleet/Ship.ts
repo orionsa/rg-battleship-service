@@ -41,7 +41,7 @@ export class Ship {
     return map;
   }
 
-  private setCoordinates = (): void => {
+  private setCoordinates(): void {
     for (let i = 0; i < this.size; i++) {
       this.coordinates.push(
         this._isVertical
@@ -57,9 +57,9 @@ export class Ship {
             },
       );
     }
-  };
+  }
 
-  private validateStartCoordinate = (startCoordinate: ICoordinate): void => {
+  private validateStartCoordinate(startCoordinate: ICoordinate): void {
     const start = this._isVertical ? startCoordinate.y : startCoordinate.x;
     const isValid = start + this.size <= this.boardSize;
     if (!isValid) {
@@ -69,12 +69,12 @@ export class Ship {
     }
 
     this.startCoordinate = startCoordinate;
-  };
+  }
 
-  public setPosition = (
+  public setPosition(
     newStartCoordinate: ICoordinate,
     newDirection?: TDirection,
-  ): void => {
+  ): void {
     if (newDirection) {
       this.direction = newDirection;
     }
@@ -83,9 +83,9 @@ export class Ship {
     this.setCoordinates();
     this.isPositioned = true;
     this.direction = newDirection;
-  };
+  }
 
-  public setHit = (hitCoordinate: ICoordinate): void => {
+  public setHit(hitCoordinate: ICoordinate): void {
     const index = this.coordinates.findIndex(
       ({ x, y }) => x === hitCoordinate.x && y === hitCoordinate.y,
     );
@@ -97,9 +97,9 @@ export class Ship {
     }
 
     this.coordinates[index].isHit = true;
-  };
+  }
 
-  public findSurroundingCells = (): ICoordinate[] => {
+  public findSurroundingCells(): ICoordinate[] {
     let coordinates: ICoordinate[] = [];
     const { x, y } = this.startCoordinate;
     if (this._isVertical) {
@@ -128,5 +128,5 @@ export class Ship {
     );
 
     return coordinates;
-  };
+  }
 }

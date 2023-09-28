@@ -20,11 +20,11 @@ export class Fleet {
     });
   }
 
-  private getShip = (shipId: string): Ship => {
+  private getShip(shipId: string): Ship {
     return this.ships.filter(({ id }) => id === shipId)[0];
-  };
+  }
 
-  public initFleet = (): void => {
+  public initFleet(): void {
     for (let i = 1; i <= 4; i++) {
       for (let j = 4 - i; j >= 0; j--) {
         const ship = new Ship(i as TSize);
@@ -33,14 +33,14 @@ export class Fleet {
         // this.manager.set(ship.id, { isPositioned: false });
       }
     }
-  };
+  }
 
-  public positionShip = ({
+  public positionShip({
     id,
     direction,
     startCoordinate,
-  }: IPositionShipDto): void => {
+  }: IPositionShipDto): void {
     const ship: Ship = this.getShip(id);
     ship.setPosition(startCoordinate, direction);
-  };
+  }
 }
