@@ -1,4 +1,4 @@
-import { IShip, TDirection, TSize, IShipCoordinate } from './Fleet.interface';
+import { TDirection, TSize, IShipCoordinate } from './Fleet.interface';
 import { ICoordinate } from '../shared.interface';
 import { BOARD_SIZE } from '../constants';
 import { genId } from '../nanoid';
@@ -6,30 +6,30 @@ import { genId } from '../nanoid';
 export class Ship {
   id: string;
   size: TSize;
-  direction: TDirection;
+  direction: TDirection | null;
   coordinates: IShipCoordinate[];
   startCoordinate: ICoordinate;
+  isPositioned: boolean;
 
-  constructor({ size, direction, startCoordinate }: IShip) {
-    if (!size || !direction || !startCoordinate) {
-      throw new Error(
-        `[Ship/constructor]: should get to following params: \n 
-        size, direction, startCoordinate but got ${size}, ${direction}, ${startCoordinate}`,
-      );
+  constructor(size: TSize) {
+    // if (!size || !direction || !startCoordinate) {
+    if (!size) {
+      throw new Error(`[Ship/constructor]: should get size but got ${size}`);
     }
     this.id = genId({ prefix: 'ship_' });
     this.size = size;
-    this.direction = direction;
+    this.direction = null;
     this.coordinates = [];
-    this.validateStartCoordinate(startCoordinate);
-    this.setCoordinates();
+    this.isPositioned = false;
+    // this.validateStartCoordinate(startCoordinate);
+    // this.setCoordinates();
   }
 
-  get _isSunk() {
+  get _isSunk(): boolean {
     return this.coordinates.every((coor) => coor.isHit);
   }
 
-  get _isVertical() {
+  get _isVertical(): boolean {
     return this.direction === 'vertical';
   }
 
@@ -63,7 +63,7 @@ export class Ship {
     this.startCoordinate = startCoordinate;
   };
 
-  public changePosition = (
+  public setPosition = (
     newStartCoordinate: ICoordinate,
     newDirection?: TDirection,
   ): void => {
@@ -73,6 +73,8 @@ export class Ship {
 
     this.validateStartCoordinate(newStartCoordinate);
     this.setCoordinates();
+    this.isPositioned = true;
+    this.direction = newDirection;
   };
 
   public setHit = (hitCoordinate: ICoordinate): void => {

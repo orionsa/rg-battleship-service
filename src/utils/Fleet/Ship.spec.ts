@@ -3,24 +3,26 @@ import { Ship } from './Ship';
 describe('Ship.ts', () => {
   describe('Ship constructor', () => {
     it('should create new Ship instance', () => {
-      const ship = new Ship({
-        size: 2,
-        direction: 'vertical',
-        startCoordinate: { x: 0, y: 0 },
-      });
+      const ship = new Ship(2);
 
       expect(ship).toBeInstanceOf(Ship);
     });
   });
 
+  describe('setPosition method', () => {
+    const ship = new Ship(2);
+
+    expect(ship.isPositioned).toBe(false);
+
+    ship.setPosition({ x: 0, y: 0 }, 'vertical');
+
+    expect(ship.isPositioned).toBe(true);
+  });
+
   describe('setHit method', () => {
     it('setHit should change coordinate status to hit', () => {
-      const ship = new Ship({
-        size: 2,
-        direction: 'vertical',
-        startCoordinate: { x: 0, y: 0 },
-      });
-
+      const ship = new Ship(2);
+      ship.setPosition({ x: 0, y: 0 }, 'vertical');
       ship.setHit({ x: 0, y: 1 });
       expect(ship.coordinates[1].isHit).toBe(true);
     });
@@ -28,22 +30,18 @@ describe('Ship.ts', () => {
 
   describe('findSurroundingCells method', () => {
     it('findSurroundingCells should return array of surrounding coordiantes', () => {
-      const ship = new Ship({
-        size: 4,
-        direction: 'vertical',
-        startCoordinate: { x: 3, y: 3 },
-      });
+      const ship = new Ship(4);
+
+      ship.setPosition({ x: 3, y: 3 }, 'vertical');
       const surroundingCells = ship.findSurroundingCells();
 
       expect(surroundingCells).toHaveLength(14);
     });
 
     it('findSurroundingCells should return array of inbound surrounding coordiantes', () => {
-      const ship = new Ship({
-        size: 1,
-        direction: 'horizontal',
-        startCoordinate: { x: 0, y: 0 },
-      });
+      const ship = new Ship(1);
+
+      ship.setPosition({ x: 0, y: 0 }, 'vertical');
 
       const surroundingCells = ship.findSurroundingCells();
       expect(surroundingCells).toHaveLength(3);
