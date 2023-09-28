@@ -1,4 +1,4 @@
-import { IShip, TDirection, TSize, IShipCoordinate } from './Ships.interface';
+import { IShip, TDirection, TSize, IShipCoordinate } from './Fleet.interface';
 import { ICoordinate } from '../shared.interface';
 import { BOARD_SIZE } from '../constants';
 import { genId } from '../nanoid';
