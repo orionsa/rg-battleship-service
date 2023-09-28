@@ -16,9 +16,10 @@ export class Board {
     const board: IBoard = {
       rows: [],
     };
+
     for (let i = 0; i < this.boardSize; i++) {
       for (let j = 0; j < this.boardSize; j++) {
-        board.rows[i].tiles.push({
+        board.rows[i].cells.push({
           id: `${i}${j}`,
           coordinates: { x: i, y: j },
           isHit: false,

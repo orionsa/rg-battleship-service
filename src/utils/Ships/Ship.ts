@@ -29,10 +29,14 @@ export class Ship {
     return this.coordinates.every((coor) => coor.isHit);
   }
 
+  get _isVertical() {
+    return this.direction === 'vertical';
+  }
+
   private setCoordinates = (): void => {
     for (let i = 0; i < this.size; i++) {
       this.coordinates.push(
-        this.direction === 'vertical'
+        this._isVertical
           ? {
               x: this.startCoordinate.x,
               y: this.startCoordinate.y + i,
@@ -48,8 +52,7 @@ export class Ship {
   };
 
   private validateStartCoordinate = (startCoordinate: ICoordinate): void => {
-    const start =
-      this.direction === 'vertical' ? startCoordinate.y : startCoordinate.x;
+    const start = this._isVertical ? startCoordinate.y : startCoordinate.x;
     const isValid = start + this.size <= BOARD_SIZE;
     if (!isValid) {
       throw new Error(
@@ -84,5 +87,36 @@ export class Ship {
     }
 
     this.coordinates[index].isHit = true;
+  };
+
+  public findSurroundingCells = (): ICoordinate[] => {
+    let coordinates: ICoordinate[] = [];
+    const { x, y } = this.startCoordinate;
+    if (this._isVertical) {
+      for (let i = y - 1; i <= y + this.size; i++) {
+        coordinates.push({ y: i, x: x - 1 }, { y: i, x: x + 1 });
+        if (i === y - 1 || i === y + this.size) {
+          coordinates.push({ y: i, x: x });
+        }
+      }
+    } else {
+      for (let i = x - 1; i <= x + this.size; i++) {
+        coordinates.push({ x: i, y: y - 1 }, { x: i, y: y + 1 });
+        if (i === x - 1 || i === x + this.size) {
+          coordinates.push({ x: i, y: x });
+        }
+      }
+    }
+
+    // filter out of bounds cells
+    coordinates = coordinates.filter(
+      (coor) =>
+        coor.x >= 0 &&
+        coor.x < BOARD_SIZE &&
+        coor.y >= 0 &&
+        coor.y < BOARD_SIZE,
+    );
+
+    return coordinates;
   };
 }

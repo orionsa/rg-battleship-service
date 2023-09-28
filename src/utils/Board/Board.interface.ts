@@ -1,6 +1,6 @@
 import { ICoordinate } from '../shared.interface';
 
-export interface ITile {
+export interface ICell {
   id: string;
   isHit: boolean;
   hasShip: boolean;
@@ -9,7 +9,7 @@ export interface ITile {
 
 export interface IRow {
   number: number;
-  tiles: ITile[];
+  cells: ICell[];
 }
 
 export interface IBoard {
