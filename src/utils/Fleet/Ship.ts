@@ -33,6 +33,16 @@ export class Ship {
     return this.direction === 'vertical';
   }
 
+  get _coordinatesMap(): Map<string, boolean> {
+    // returns a hashmap of key: x and y string coordinate, value: isHit
+    const map = new Map();
+    this.coordinates.forEach(({ x, y, isHit }) => {
+      map.set(`${x}${y}`, isHit);
+    });
+
+    return map;
+  }
+
   private setCoordinates = (): void => {
     for (let i = 0; i < this.size; i++) {
       this.coordinates.push(

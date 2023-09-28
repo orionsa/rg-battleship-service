@@ -9,6 +9,16 @@ describe('Ship.ts', () => {
     });
   });
 
+  describe('_coordinatesMap getter', () => {
+    it('should return a has map with hits ', () => {
+      const ship = new Ship(2);
+      ship.setPosition({ x: 0, y: 0 }, 'vertical');
+      const map = ship._coordinatesMap;
+
+      expect(map.size).toBe(2);
+    });
+  });
+
   describe('setPosition method', () => {
     const ship = new Ship(2);
 
