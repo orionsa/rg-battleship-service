@@ -99,34 +99,34 @@ export class Ship {
     this.coordinates[index].isHit = true;
   }
 
-  public findSurroundingCells(): ICoordinate[] {
-    let coordinates: ICoordinate[] = [];
-    const { x, y } = this.startCoordinate;
-    if (this._isVertical) {
-      for (let i = y - 1; i <= y + this.size; i++) {
-        coordinates.push({ y: i, x: x - 1 }, { y: i, x: x + 1 });
-        if (i === y - 1 || i === y + this.size) {
-          coordinates.push({ y: i, x: x });
-        }
-      }
-    } else {
-      for (let i = x - 1; i <= x + this.size; i++) {
-        coordinates.push({ x: i, y: y - 1 }, { x: i, y: y + 1 });
-        if (i === x - 1 || i === x + this.size) {
-          coordinates.push({ x: i, y: x });
-        }
-      }
-    }
+  // public findSurroundingCells(): ICoordinate[] {
+  //   let coordinates: ICoordinate[] = [];
+  //   const { x, y } = this.startCoordinate;
+  //   if (this._isVertical) {
+  //     for (let i = y - 1; i <= y + this.size; i++) {
+  //       coordinates.push({ y: i, x: x - 1 }, { y: i, x: x + 1 });
+  //       if (i === y - 1 || i === y + this.size) {
+  //         coordinates.push({ y: i, x: x });
+  //       }
+  //     }
+  //   } else {
+  //     for (let i = x - 1; i <= x + this.size; i++) {
+  //       coordinates.push({ x: i, y: y - 1 }, { x: i, y: y + 1 });
+  //       if (i === x - 1 || i === x + this.size) {
+  //         coordinates.push({ x: i, y: x });
+  //       }
+  //     }
+  //   }
 
-    // filter out of bounds cells
-    coordinates = coordinates.filter(
-      (coor) =>
-        coor.x >= 0 &&
-        coor.x < this.boardSize &&
-        coor.y >= 0 &&
-        coor.y < this.boardSize,
-    );
+  //   // filter out of bounds cells
+  //   coordinates = coordinates.filter(
+  //     (coor) =>
+  //       coor.x >= 0 &&
+  //       coor.x < this.boardSize &&
+  //       coor.y >= 0 &&
+  //       coor.y < this.boardSize,
+  //   );
 
-    return coordinates;
-  }
+  //   return coordinates;
+  // }
 }

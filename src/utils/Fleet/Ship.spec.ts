@@ -38,23 +38,23 @@ describe('Ship.ts', () => {
     });
   });
 
-  describe('findSurroundingCells method', () => {
-    it('findSurroundingCells should return array of surrounding coordiantes', () => {
-      const ship = new Ship(4);
+  // describe('findSurroundingCells method', () => {
+  //   it('findSurroundingCells should return array of surrounding coordiantes', () => {
+  //     const ship = new Ship(4);
 
-      ship.setPosition({ x: 3, y: 3 }, 'vertical');
-      const surroundingCells = ship.findSurroundingCells();
+  //     ship.setPosition({ x: 3, y: 3 }, 'vertical');
+  //     const surroundingCells = ship.findSurroundingCells();
 
-      expect(surroundingCells).toHaveLength(14);
-    });
+  //     expect(surroundingCells).toHaveLength(14);
+  //   });
 
-    it('findSurroundingCells should return array of inbound surrounding coordiantes', () => {
-      const ship = new Ship(1);
+  //   it('findSurroundingCells should return array of inbound surrounding coordiantes', () => {
+  //     const ship = new Ship(1);
 
-      ship.setPosition({ x: 0, y: 0 }, 'vertical');
+  //     ship.setPosition({ x: 0, y: 0 }, 'vertical');
 
-      const surroundingCells = ship.findSurroundingCells();
-      expect(surroundingCells).toHaveLength(3);
-    });
-  });
+  //     const surroundingCells = ship.findSurroundingCells();
+  //     expect(surroundingCells).toHaveLength(3);
+  //   });
+  // });
 });
