@@ -4,6 +4,7 @@ import { BOARD_SIZE } from '../constants';
 import { genId } from '../nanoid';
 
 export class Ship {
+  private readonly boardSize = BOARD_SIZE;
   id: string;
   size: TSize;
   direction: TDirection | null;
@@ -12,7 +13,6 @@ export class Ship {
   isPositioned: boolean;
 
   constructor(size: TSize) {
-    // if (!size || !direction || !startCoordinate) {
     if (!size) {
       throw new Error(`[Ship/constructor]: should get size but got ${size}`);
     }
@@ -21,8 +21,6 @@ export class Ship {
     this.direction = null;
     this.coordinates = [];
     this.isPositioned = false;
-    // this.validateStartCoordinate(startCoordinate);
-    // this.setCoordinates();
   }
 
   get _isSunk(): boolean {
@@ -63,7 +61,7 @@ export class Ship {
 
   private validateStartCoordinate = (startCoordinate: ICoordinate): void => {
     const start = this._isVertical ? startCoordinate.y : startCoordinate.x;
-    const isValid = start + this.size <= BOARD_SIZE;
+    const isValid = start + this.size <= this.boardSize;
     if (!isValid) {
       throw new Error(
         '[Ship/validateStartCoordinate]: ship coordinates out of bounds',
@@ -124,9 +122,9 @@ export class Ship {
     coordinates = coordinates.filter(
       (coor) =>
         coor.x >= 0 &&
-        coor.x < BOARD_SIZE &&
+        coor.x < this.boardSize &&
         coor.y >= 0 &&
-        coor.y < BOARD_SIZE,
+        coor.y < this.boardSize,
     );
 
     return coordinates;
