@@ -1,25 +1,24 @@
-import { IBoard } from './Board.interface';
+import { ICell } from './Board.interface';
 import { genId } from '../nanoid';
 import { BOARD_SIZE } from '../constants';
 
 export class Board {
   id: string;
-  board: IBoard;
+  rows: ICell[][];
   private readonly boardSize: number = BOARD_SIZE;
 
   constructor() {
     this.id = genId({ prefix: 'board_' });
-    this.board = this.initBoard();
+    this.rows = this.initBoard();
   }
 
-  private initBoard(): IBoard {
-    const board: IBoard = {
-      rows: [],
-    };
+  private initBoard(): ICell[][] {
+    const rows: ICell[][] = [];
 
     for (let i = 0; i < this.boardSize; i++) {
+      rows[i] = [];
       for (let j = 0; j < this.boardSize; j++) {
-        board.rows[i].cells.push({
+        rows[i].push({
           id: `${i}${j}`,
           coordinates: { x: i, y: j },
           isHit: false,
@@ -28,6 +27,6 @@ export class Board {
       }
     }
 
-    return board;
+    return rows;
   }
 }

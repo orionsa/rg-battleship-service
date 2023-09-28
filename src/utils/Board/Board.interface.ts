@@ -7,11 +7,11 @@ export interface ICell {
   coordinates: ICoordinate;
 }
 
-export interface IRow {
-  number: number;
-  cells: ICell[];
-}
+// export interface IRow {
+//   number: number;
+//   cells: ICell[];
+// }
 
-export interface IBoard {
-  rows: IRow[];
-}
+// export interface IBoard {
+//   rows: IRow[];
+// }
