@@ -3,7 +3,7 @@ import { genId } from '../nanoid';
 import { BOARD_SIZE } from '../constants';
 import { Fleet } from '../Fleet/Fleet';
 import { ICoordinate } from '../shared.interface';
-// import { IPositionShipDto } from '../Fleet/Fleet.interface';
+import { IPositionShipDto } from '../Fleet/Fleet.interface';
 
 export class Board {
   private readonly boardSize = BOARD_SIZE;
@@ -107,11 +107,37 @@ export class Board {
     return false;
   }
 
-  // public positionShipOnBoard({
-  //   id,
-  //   startCoordinate,
-  //   direction,
-  // }: IPositionShipDto): void {
+  public positionShipOnBoard({
+    id,
+    startCoordinate,
+    direction,
+  }: IPositionShipDto): void {
+    const ship = this.fleet.getShip(id);
+    const isInBounds =
+      direction === 'vertical'
+        ? startCoordinate.y + ship.size < this.boardSize
+        : startCoordinate.x + ship.size < this.boardSize;
 
-  // }
+    if (!isInBounds) {
+      throw new Error('[Board/positionShipOnBoard]: ship out of bounds');
+    }
+
+    const shipBlockedCells = this.getBlockedCellsByParams({
+      startCoordinate,
+      direction,
+      shipSize: ship.size,
+    });
+    const boardBlockedCells = this.getBlockedCells(id);
+    const isOverlapping = this.checkCellsOverlapping(
+      shipBlockedCells,
+      boardBlockedCells,
+    );
+
+    if (isOverlapping) {
+      throw new Error('[Board/positionShipOnBoard]: ship overlapping');
+    }
+
+    ship.setPosition(startCoordinate, direction);
+    this.shipBlockedCoordinates.set(id, shipBlockedCells);
+  }
 }

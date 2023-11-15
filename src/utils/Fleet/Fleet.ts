@@ -20,7 +20,7 @@ export class Fleet {
     });
   }
 
-  private getShip(shipId: string): Ship {
+  public getShip(shipId: string): Ship {
     return this.ships.filter(({ id }) => id === shipId)[0];
   }
 

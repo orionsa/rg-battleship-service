@@ -88,4 +88,49 @@ describe('Board.ts', () => {
       expect(hasOverlapping).toBe(true);
     });
   });
+
+  describe('positionShipOnBoard method', () => {
+    it('should throw error if ship is out of bounds vetically', () => {
+      const board = new Board();
+
+      const shipId = board.fleet.ships[0].id;
+      const startCoordinate = { x: 9, y: 9 };
+      const direction = 'vertical';
+
+      expect(() =>
+        board.positionShipOnBoard({ id: shipId, startCoordinate, direction }),
+      ).toThrowError();
+    });
+
+    it('should throw error if ship is out of bounds horizontally', () => {
+      const board = new Board();
+
+      const shipId = board.fleet.ships[9].id;
+      const startCoordinate = { x: 6, y: 0 };
+      const direction = 'horizontal';
+
+      expect(() =>
+        board.positionShipOnBoard({ id: shipId, startCoordinate, direction }),
+      ).toThrowError();
+    });
+
+    it('should throw error if ship is overlapping with another ship', () => {
+      const board = new Board();
+
+      const shipId = board.fleet.ships[0].id;
+      const secondShipId = board.fleet.ships[1].id;
+      const startCoordinate = { x: 0, y: 0 };
+      const secondShipStartCoordinate = { x: 1, y: 1 };
+      const direction = 'vertical';
+
+      board.positionShipOnBoard({ id: shipId, startCoordinate, direction }),
+        expect(() =>
+          board.positionShipOnBoard({
+            id: secondShipId,
+            startCoordinate: secondShipStartCoordinate,
+            direction,
+          }),
+        ).toThrowError();
+    });
+  });
 });
