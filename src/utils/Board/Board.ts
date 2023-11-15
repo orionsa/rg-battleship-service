@@ -42,7 +42,7 @@ export class Board {
     startCoordinate,
     direction,
     shipSize,
-  }): Set<ICoordinate> {
+  }): ICoordinate[] {
     /**
      * get the cells that will be blocked by a ships position, direction and size
      */
@@ -79,26 +79,27 @@ export class Board {
         coor.y < this.boardSize,
     );
 
-    return new Set(coordinates);
+    // return new Set(coordinates);
+    return coordinates;
   }
 
-  public getBlockedCells(shipId: string): Set<ICoordinate> {
+  public getBlockedCells(shipId: string): ICoordinate[] {
     /**
      * get all blocked cell beside the ones that are blocked by a specific ship.
      */
     const mapCopy = new Map(this.shipBlockedCoordinates);
     mapCopy.delete(shipId);
-    const set: Set<ICoordinate> = new Set();
-    mapCopy.forEach((ship) => ship.forEach((coor) => set.add(coor)));
+    const set: ICoordinate[] = [];
+    mapCopy.forEach((ship) => ship.forEach((coor) => set.push(coor)));
     return set;
   }
 
   public checkCellsOverlapping(
-    shipBlockedCells: Set<ICoordinate>,
-    boardBlockedCells: Set<ICoordinate>,
+    shipBlockedCells: ICoordinate[],
+    boardBlockedCells: ICoordinate[],
   ): boolean {
     for (const coor of shipBlockedCells) {
-      if (boardBlockedCells.has(coor)) {
+      if (boardBlockedCells.some((el) => el.x === coor.x && el.y === coor.y)) {
         return true;
       }
     }

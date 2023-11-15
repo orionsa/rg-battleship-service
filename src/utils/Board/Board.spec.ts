@@ -20,7 +20,7 @@ describe('Board.ts', () => {
         shipSize: 4,
       });
 
-      expect(surroundingCells.size).toBe(18);
+      expect(surroundingCells.length).toBe(18);
     });
 
     it('getBlockedCellsByParams should return array of inbound surrounding coordiantes', () => {
@@ -32,7 +32,7 @@ describe('Board.ts', () => {
         shipSize: 1,
       });
 
-      expect(surroundingCells.size).toBe(4);
+      expect(surroundingCells.length).toBe(4);
     });
   });
 
@@ -58,12 +58,34 @@ describe('Board.ts', () => {
       board.shipBlockedCoordinates.set(firstShipId, firstShipCoor);
       board.shipBlockedCoordinates.set(secondShipId, secondShipCoor);
       const blockeCells = board.getBlockedCells(firstShipId);
-      const secondSet = new Set(secondShipCoor);
 
       expect(
-        blockeCells.size === secondSet.size &&
-          [...blockeCells].every((element) => secondSet.has(element)),
+        blockeCells.length === secondShipCoor.length &&
+          [...blockeCells].every((element) => secondShipCoor.includes(element)),
       ).toBe(true);
+    });
+  });
+
+  describe('checkCellsOverlapping method', () => {
+    it('should return true for overlapping cells ', () => {
+      const board = new Board();
+
+      const firstSet = [
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+        { x: 0, y: 1 },
+        { x: 1, y: 1 },
+      ];
+
+      const secondSet = [
+        { x: 1, y: 1 },
+        { x: 2, y: 1 },
+        { x: 1, y: 2 },
+        { x: 2, y: 2 },
+      ];
+
+      const hasOverlapping = board.checkCellsOverlapping(firstSet, secondSet);
+      expect(hasOverlapping).toBe(true);
     });
   });
 });
