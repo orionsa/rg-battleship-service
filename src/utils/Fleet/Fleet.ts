@@ -1,16 +1,14 @@
 import { Ship } from './Ship';
-import { TSize, TFleetItem, IPositionShipDto } from './Fleet.interface';
+import { TSize, IPositionShipDto } from './Fleet.interface';
 import { genId } from '../nanoid';
 
 export class Fleet {
   public id: string;
   public ships: Ship[];
-  // public manager: Map<string, TFleetItem>;
 
   constructor() {
     this.id = genId({ prefix: 'fleet_' });
     this.ships = [];
-    // this.manager = new Map();
     this.initFleet();
   }
 

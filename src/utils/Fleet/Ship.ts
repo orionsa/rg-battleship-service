@@ -1,4 +1,9 @@
-import { TDirection, TSize, IShipCoordinate } from './Fleet.interface';
+import {
+  TDirection,
+  TSize,
+  IShipCoordinate,
+  IShipCellsDto,
+} from './Fleet.interface';
 import { ICoordinate } from '../shared.interface';
 import { BOARD_SIZE } from '../constants';
 import { genId } from '../nanoid';
@@ -99,34 +104,36 @@ export class Ship {
     this.coordinates[index].isHit = true;
   }
 
-  // public findSurroundingCells(): ICoordinate[] {
-  //   let coordinates: ICoordinate[] = [];
-  //   const { x, y } = this.startCoordinate;
-  //   if (this._isVertical) {
-  //     for (let i = y - 1; i <= y + this.size; i++) {
-  //       coordinates.push({ y: i, x: x - 1 }, { y: i, x: x + 1 });
-  //       if (i === y - 1 || i === y + this.size) {
-  //         coordinates.push({ y: i, x: x });
-  //       }
-  //     }
-  //   } else {
-  //     for (let i = x - 1; i <= x + this.size; i++) {
-  //       coordinates.push({ x: i, y: y - 1 }, { x: i, y: y + 1 });
-  //       if (i === x - 1 || i === x + this.size) {
-  //         coordinates.push({ x: i, y: x });
-  //       }
-  //     }
-  //   }
+  static findSurroundingCells({
+    startCoordinate,
+    size,
+    direction,
+    boardSize,
+  }: IShipCellsDto): ICoordinate[] {
+    let coordinates: ICoordinate[] = [];
+    const { x, y } = startCoordinate;
+    if (direction === 'vertical') {
+      for (let i = y - 1; i <= y + size; i++) {
+        coordinates.push({ y: i, x: x - 1 }, { y: i, x: x + 1 });
+        if (i === y - 1 || i === y + size) {
+          coordinates.push({ y: i, x: x });
+        }
+      }
+    } else {
+      for (let i = x - 1; i <= x + size; i++) {
+        coordinates.push({ x: i, y: y - 1 }, { x: i, y: y + 1 });
+        if (i === x - 1 || i === x + size) {
+          coordinates.push({ x: i, y: x });
+        }
+      }
+    }
 
-  //   // filter out of bounds cells
-  //   coordinates = coordinates.filter(
-  //     (coor) =>
-  //       coor.x >= 0 &&
-  //       coor.x < this.boardSize &&
-  //       coor.y >= 0 &&
-  //       coor.y < this.boardSize,
-  //   );
+    // filter out of bounds cells
+    coordinates = coordinates.filter(
+      (coor) =>
+        coor.x >= 0 && coor.x < boardSize && coor.y >= 0 && coor.y < boardSize,
+    );
 
-  //   return coordinates;
-  // }
+    return coordinates;
+  }
 }
