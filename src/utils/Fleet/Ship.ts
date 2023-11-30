@@ -157,6 +157,12 @@ export class Ship {
     this.coordinates[index].isHit = true;
   }
 
+  public unsetPosition() {
+    this.direction = null;
+    this.coordinates = [];
+    this.isPositioned = false;
+  }
+
   // public getOwnSurroundingCells(): ICoordinate[] {
   //   return Ship.findSurroundingCells({
   //     startCoordinate: this.startCoordinate,

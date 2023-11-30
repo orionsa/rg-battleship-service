@@ -75,4 +75,17 @@ describe('Ship.ts', () => {
       expect(predictedShipCoordinates).toHaveLength(SIZE);
     });
   });
+
+  describe('unsetPosition method', () => {
+    it('should set isPositioned flag to false, reset coordinates array to empty and change direction to null', () => {
+      const ship = new Ship(4);
+      ship.setPosition({ x: 0, y: 0 }, 'horizontal');
+
+      expect(ship.isPositioned).toBe(true);
+      ship.unsetPosition();
+      expect(ship.isPositioned).toBe(false);
+      expect(ship.direction).toBe(null);
+      expect(ship.coordinates).toHaveLength(0);
+    });
+  });
 });
