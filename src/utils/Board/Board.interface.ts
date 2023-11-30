@@ -5,13 +5,5 @@ export interface ICell {
   isHit: boolean;
   hasShip: boolean;
   coordinates: ICoordinate;
+  borderShipIds: string[];
 }
-
-// export interface IRow {
-//   number: number;
-//   cells: ICell[];
-// }
-
-// export interface IBoard {
-//   rows: IRow[];
-// }

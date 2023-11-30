@@ -46,6 +46,59 @@ export class Ship {
     return map;
   }
 
+  static findSurroundingCells({
+    startCoordinate,
+    size,
+    direction,
+    boardSize,
+  }: IShipCellsDto): ICoordinate[] {
+    let coordinates: ICoordinate[] = [];
+    const { x, y } = startCoordinate;
+    if (direction === 'vertical') {
+      for (let i = y - 1; i <= y + size; i++) {
+        coordinates.push({ y: i, x: x - 1 }, { y: i, x: x + 1 });
+        if (i === y - 1 || i === y + size) {
+          coordinates.push({ y: i, x: x });
+        }
+      }
+    } else {
+      for (let i = x - 1; i <= x + size; i++) {
+        coordinates.push({ x: i, y: y - 1 }, { x: i, y: y + 1 });
+        if (i === x - 1 || i === x + size) {
+          coordinates.push({ x: i, y: y });
+        }
+      }
+    }
+
+    // filter out of bounds cells
+    coordinates = coordinates.filter(
+      (coor) =>
+        coor.x >= 0 && coor.x < boardSize && coor.y >= 0 && coor.y < boardSize,
+    );
+
+    return coordinates;
+  }
+
+  static getPredictedShipCoordinates({
+    startCoordinate,
+    direction,
+    size,
+  }: IShipCellsDto): ICoordinate[] {
+    const coordinates: ICoordinate[] = [];
+    const { x, y } = startCoordinate;
+    if (direction === 'vertical') {
+      for (let i = y; i < y + size; i++) {
+        coordinates.push({ y: i, x });
+      }
+    } else {
+      for (let i = x; i < x + size; i++) {
+        coordinates.push({ x: i, y });
+      }
+    }
+
+    return coordinates;
+  }
+
   private setCoordinates(): void {
     for (let i = 0; i < this.size; i++) {
       this.coordinates.push(
@@ -104,36 +157,12 @@ export class Ship {
     this.coordinates[index].isHit = true;
   }
 
-  static findSurroundingCells({
-    startCoordinate,
-    size,
-    direction,
-    boardSize,
-  }: IShipCellsDto): ICoordinate[] {
-    let coordinates: ICoordinate[] = [];
-    const { x, y } = startCoordinate;
-    if (direction === 'vertical') {
-      for (let i = y - 1; i <= y + size; i++) {
-        coordinates.push({ y: i, x: x - 1 }, { y: i, x: x + 1 });
-        if (i === y - 1 || i === y + size) {
-          coordinates.push({ y: i, x: x });
-        }
-      }
-    } else {
-      for (let i = x - 1; i <= x + size; i++) {
-        coordinates.push({ x: i, y: y - 1 }, { x: i, y: y + 1 });
-        if (i === x - 1 || i === x + size) {
-          coordinates.push({ x: i, y: x });
-        }
-      }
-    }
-
-    // filter out of bounds cells
-    coordinates = coordinates.filter(
-      (coor) =>
-        coor.x >= 0 && coor.x < boardSize && coor.y >= 0 && coor.y < boardSize,
-    );
-
-    return coordinates;
-  }
+  // public getOwnSurroundingCells(): ICoordinate[] {
+  //   return Ship.findSurroundingCells({
+  //     startCoordinate: this.startCoordinate,
+  //     direction: this.direction,
+  //     size: this.size,
+  //     boardSize: this.boardSize,
+  //   });
+  // }
 }

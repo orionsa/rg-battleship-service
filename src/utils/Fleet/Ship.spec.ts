@@ -61,4 +61,18 @@ describe('Ship.ts', () => {
       expect(surroundingCells).toHaveLength(3);
     });
   });
+
+  describe('getPredictedShipCoordinates method', () => {
+    it('getPredictedShipCoordinates should return array of predicted ship coordinates', () => {
+      const SIZE = 4;
+      const predictedShipCoordinates = Ship.getPredictedShipCoordinates({
+        startCoordinate: { x: 2, y: 2 },
+        direction: 'horizontal',
+        size: SIZE,
+        boardSize: 10,
+      });
+
+      expect(predictedShipCoordinates).toHaveLength(SIZE);
+    });
+  });
 });
