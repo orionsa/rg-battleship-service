@@ -88,4 +88,11 @@ describe('Ship.ts', () => {
       expect(ship.coordinates).toHaveLength(0);
     });
   });
+
+  describe('getOwnSurroundingCells method', () => {
+    const ship = new Ship(1);
+    ship.setPosition({ x: 0, y: 0 }, 'horizontal');
+    const cells = ship.getOwnSurroundingCells();
+    expect(cells).toHaveLength(3);
+  });
 });

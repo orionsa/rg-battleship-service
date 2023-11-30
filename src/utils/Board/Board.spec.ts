@@ -224,6 +224,25 @@ describe('Board.ts', () => {
     });
   });
 
+  describe('removeShipFromBoard method', () => {
+    const board = new Board();
+    const ship = board.fleet.ships[0];
+
+    board.positionShipOnBoard({
+      id: ship.id,
+      startCoordinate: { x: 0, y: 0 },
+      direction: 'vertical',
+    });
+
+    expect(board.rows[0][0].hasShip).toBe(true);
+    expect(board.rows[0][1].borderShipIds).toContain(ship.id);
+
+    board.removeShipFromBoard(ship.id);
+    expect(ship.isPositioned).toBe(false);
+    expect(board.rows[0][0].hasShip).toBe(false);
+    expect(board.rows[0][1].borderShipIds).not.toContain(ship.id);
+  });
+
   describe('logBoard method', () => {
     it('should log board with ships', () => {
       const positions = [

@@ -40,6 +40,42 @@ export class Board {
     return rows;
   }
 
+  private setCoordiantesWithShip(coordinates: ICoordinate[]): void {
+    for (const coor of coordinates) {
+      const { x, y } = coor;
+      this.rows[x][y].hasShip = true;
+    }
+  }
+
+  private setCoodinatesWithBorderShip(
+    coordiantes: ICoordinate[],
+    shipId: string,
+  ): void {
+    for (const coor of coordiantes) {
+      const { x, y } = coor;
+      this.rows[x][y].borderShipIds.push(shipId);
+    }
+  }
+
+  private removeShipCoordinates(coordiantes: ICoordinate[]) {
+    for (const coor of coordiantes) {
+      const { x, y } = coor;
+      this.rows[x][y].hasShip = false;
+    }
+  }
+
+  private removeShipIdFromCell(
+    coordiantes: ICoordinate[],
+    shipId: string,
+  ): void {
+    for (const coor of coordiantes) {
+      const { x, y } = coor;
+      this.rows[x][y].borderShipIds = this.rows[x][y].borderShipIds.filter(
+        (id) => id !== shipId,
+      );
+    }
+  }
+
   // public getBlockedCellsByParams({
   //   startCoordinate,
   //   direction,
@@ -235,19 +271,17 @@ export class Board {
     return true;
   }
 
-  private setCoordiantesWithShip(coordinates: ICoordinate[]): void {
-    for (const coor of coordinates) {
-      this.rows[coor.x][coor.y].hasShip = true;
+  public removeShipFromBoard(shipId) {
+    const isValidShipId = this.fleet.validateShipById(shipId);
+    if (!isValidShipId) {
+      throw new Error('[Board/removeShipFromBoard]: invalid ship id');
     }
-  }
 
-  private setCoodinatesWithBorderShip(
-    coordiantes: ICoordinate[],
-    shipId: string,
-  ): void {
-    for (const coor of coordiantes) {
-      this.rows[coor.x][coor.y].borderShipIds.push(shipId);
-    }
+    const ship = this.fleet.getShip(shipId);
+    this.removeShipCoordinates(ship.coordinates);
+    const surroundingCells = ship.getOwnSurroundingCells();
+    this.removeShipIdFromCell(surroundingCells, ship.id);
+    ship.unsetPosition();
   }
 
   public logBoardCellsWithColors(): void {

@@ -33,12 +33,16 @@ export class Fleet {
     }
   }
 
-  public positionShip({
-    id,
-    direction,
-    startCoordinate,
-  }: IPositionShipDto): void {
-    const ship: Ship = this.getShip(id);
-    ship.setPosition(startCoordinate, direction);
+  public validateShipById(id: string): boolean {
+    if (!id) {
+      return false;
+    }
+
+    const ship = this.getShip(id);
+    if (!ship) {
+      return false;
+    }
+
+    return true;
   }
 }

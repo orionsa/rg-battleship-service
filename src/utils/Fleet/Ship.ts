@@ -163,12 +163,12 @@ export class Ship {
     this.isPositioned = false;
   }
 
-  // public getOwnSurroundingCells(): ICoordinate[] {
-  //   return Ship.findSurroundingCells({
-  //     startCoordinate: this.startCoordinate,
-  //     direction: this.direction,
-  //     size: this.size,
-  //     boardSize: this.boardSize,
-  //   });
-  // }
+  public getOwnSurroundingCells(): ICoordinate[] {
+    return Ship.findSurroundingCells({
+      startCoordinate: this.startCoordinate,
+      direction: this.direction,
+      size: this.size,
+      boardSize: this.boardSize,
+    });
+  }
 }
