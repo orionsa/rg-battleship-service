@@ -28,7 +28,7 @@ export class Board {
           id: `${i}${j}`,
           coordinates: { x: i, y: j },
           isHit: false,
-          hasShip: false,
+          shipId: null,
           borderShipIds: [],
         });
       }
@@ -37,10 +37,10 @@ export class Board {
     return rows;
   }
 
-  private setCoordiantesWithShip(coordinates: ICoordinate[]): void {
+  private setCoordiantesWithShip(coordinates: ICoordinate[], shipId): void {
     for (const coor of coordinates) {
       const { x, y } = coor;
-      this.rows[x][y].hasShip = true;
+      this.rows[x][y].shipId = shipId;
     }
   }
 
@@ -57,7 +57,7 @@ export class Board {
   private removeShipCoordinates(coordiantes: ICoordinate[]) {
     for (const coor of coordiantes) {
       const { x, y } = coor;
-      this.rows[x][y].hasShip = false;
+      this.rows[x][y].shipId = null;
     }
   }
 
@@ -102,7 +102,7 @@ export class Board {
       throw new Error('[Board/positionShipOnBoard]: ship overlapping');
     }
     const surroundingCells = Ship.findSurroundingCells(shipParams);
-    this.setCoordiantesWithShip(shipPredictedCells);
+    this.setCoordiantesWithShip(shipPredictedCells, ship.id);
     this.setCoodinatesWithBorderShip(surroundingCells, ship.id);
     ship.setPosition(startCoordinate, direction);
   }
@@ -112,7 +112,7 @@ export class Board {
   ): boolean {
     for (const coor of shipCoordinates) {
       if (
-        this.rows[coor.x][coor.y].hasShip ||
+        this.rows[coor.x][coor.y].shipId ||
         this.rows[coor.x][coor.y].borderShipIds.length
       ) {
         return false;
@@ -135,6 +135,25 @@ export class Board {
     ship.unsetPosition();
   }
 
+  public setHit(coordinate: ICoordinate): void {
+    /**
+     * mark cell as hit and return true if the cell has a ship on it.
+     */
+    const { x, y } = coordinate;
+    if (this.rows[x][y].isHit) {
+      throw new Error(
+        `[Board/setHit] coordinate: {x:${x}, y: ${y}} has already been hit`,
+      );
+    }
+
+    this.rows[x][y].isHit = true;
+    if (this.rows[x][y].shipId) {
+      const ship = this.fleet.getShip(this.rows[x][y].shipId);
+      ship.setHit({ x, y });
+    }
+    return;
+  }
+
   public logBoardCellsWithColors(): void {
     /**
      * helper function for develpment purpose,
@@ -148,7 +167,7 @@ export class Board {
     let board = '';
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.rows[i].length; j++) {
-        if (this.rows[j][i].hasShip) {
+        if (this.rows[j][i].shipId) {
           board += colors.blue + 'X ';
         } else if (this.rows[j][i].borderShipIds.length) {
           board += colors.orange + 'O ';

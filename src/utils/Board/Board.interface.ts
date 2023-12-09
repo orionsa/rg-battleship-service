@@ -3,7 +3,7 @@ import { ICoordinate } from '../shared.interface';
 export interface ICell {
   id: string;
   isHit: boolean;
-  hasShip: boolean;
+  shipId: null | string;
   coordinates: ICoordinate;
   borderShipIds: string[];
 }
