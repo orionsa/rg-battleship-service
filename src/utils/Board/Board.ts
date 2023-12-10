@@ -1,4 +1,4 @@
-import { ICell } from './Board.interface';
+import { IBoardCell, ITrackingBoardCell } from './Board.interface';
 import { genId } from '../nanoid';
 import { BOARD_SIZE } from '../constants';
 import { Fleet } from '../Fleet/Fleet';
@@ -9,8 +9,9 @@ import { IPositionShipDto } from '../Fleet/Fleet.interface';
 export class Board {
   private readonly boardSize = BOARD_SIZE;
   id: string;
-  rows: ICell[][];
+  rows: IBoardCell[][];
   fleet: Fleet;
+  trackingBoard: ITrackingBoardCell[][];
 
   constructor() {
     this.id = genId({ prefix: 'board_' });
@@ -20,15 +21,24 @@ export class Board {
 
   private initBoard(): void {
     this.rows = [];
+    this.trackingBoard = [];
     for (let i = 0; i < this.boardSize; i++) {
       this.rows[i] = [];
+      this.trackingBoard[i] = [];
       for (let j = 0; j < this.boardSize; j++) {
         this.rows[i].push({
-          id: `${i}${j}`,
+          id: `bc-${i}${j}`,
           coordinates: { x: i, y: j },
           isHit: false,
           shipId: null,
           borderShipIds: [],
+        });
+
+        this.trackingBoard[i].push({
+          id: `tc-${i}${j}`,
+          coordinates: { x: i, y: j },
+          isHit: false,
+          hasShip: false,
         });
       }
     }
@@ -144,8 +154,10 @@ export class Board {
     }
 
     this.rows[x][y].isHit = true;
+    this.trackingBoard[x][y].isHit = true;
     if (this.rows[x][y].shipId) {
       const ship = this.fleet.getShip(this.rows[x][y].shipId);
+      this.trackingBoard[x][y].hasShip = true;
       ship.setHit({ x, y });
     }
     return;

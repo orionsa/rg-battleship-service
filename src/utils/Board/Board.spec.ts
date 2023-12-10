@@ -9,6 +9,13 @@ describe('Board.ts', () => {
       expect(board.rows).toHaveLength(10);
       expect(board.rows.flat()).toHaveLength(100);
     });
+
+    it('should create new 10 X 10 matrics trackingBoard on Board class', () => {
+      const board = new Board();
+
+      expect(board.trackingBoard).toHaveLength(10);
+      expect(board.trackingBoard.flat()).toHaveLength(100);
+    });
   });
 
   describe('positionShipOnBoard method', () => {
@@ -197,6 +204,31 @@ describe('Board.ts', () => {
       expect(() => {
         board.setHit({ x: 0, y: 0 });
       }).toThrowError();
+    });
+
+    it('shoule set specific cell on trackingBoard setHitFlag to true', () => {
+      const board = new Board();
+
+      expect(board.trackingBoard[0][0].isHit).toBe(false);
+      board.setHit({ x: 0, y: 0 });
+      expect(board.trackingBoard[0][0].isHit).toBe(true);
+    });
+
+    it('should set this.trackingBoard specific cell isHit flag to true and change hasShip flag to true', () => {
+      const board = new Board();
+      const ship = board.fleet.ships[0];
+
+      board.positionShipOnBoard({
+        id: ship.id,
+        startCoordinate: { x: 0, y: 0 },
+        direction: 'horizontal',
+      });
+
+      expect(board.trackingBoard[0][0].isHit).toBe(false);
+      expect(board.trackingBoard[0][0].isHit).toBe(false);
+      board.setHit({ x: 0, y: 0 });
+      expect(board.trackingBoard[0][0].isHit).toBe(true);
+      expect(board.trackingBoard[0][0].isHit).toBe(true);
     });
   });
 
