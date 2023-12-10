@@ -76,4 +76,20 @@ describe('Match.ts', () => {
       expect(isValid).toBe(false);
     });
   });
+
+  describe('getPlayer method', () => {
+    it('should return the correct player', () => {
+      const match = new Match();
+      match.joinPlayer();
+      match.joinPlayer();
+
+      const { id: firstId } = match.firstPlayer;
+      const { id: secondId } = match.secondPlayer;
+      const firstPlayer = match.getPlayer(firstId);
+      const secondPlayer = match.getPlayer(secondId);
+
+      expect(firstPlayer.id).toEqual(firstId);
+      expect(secondPlayer.id).toEqual(secondId);
+    });
+  });
 });

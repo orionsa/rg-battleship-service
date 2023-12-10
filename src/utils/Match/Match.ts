@@ -39,10 +39,18 @@ export class Match {
     this.isFirstPlayerTurn = !this.isFirstPlayerTurn;
   }
 
-  validateTurnById(id): boolean {
+  validateTurnById(id: string): boolean {
     const { id: currentId } = this.isFirstPlayerTurn
       ? this.firstPlayer
       : this.secondPlayer;
     return currentId === id;
+  }
+
+  getPlayer(id: string): IPlayer | null {
+    if (this.firstPlayer?.id === id) {
+      return this.firstPlayer;
+    }
+
+    return this.secondPlayer?.id === id ? this.secondPlayer : null;
   }
 }
