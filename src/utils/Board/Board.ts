@@ -27,7 +27,7 @@ export class Board {
       this.trackingBoard[i] = [];
       for (let j = 0; j < this.boardSize; j++) {
         this.rows[i].push({
-          id: `bc-${i}${j}`,
+          id: `bc_${i}${j}`,
           coordinates: { x: i, y: j },
           isHit: false,
           shipId: null,
@@ -35,7 +35,7 @@ export class Board {
         });
 
         this.trackingBoard[i].push({
-          id: `tc-${i}${j}`,
+          id: `tc_${i}${j}`,
           coordinates: { x: i, y: j },
           isHit: false,
           hasShip: false,
