@@ -14,17 +14,16 @@ export class Board {
 
   constructor() {
     this.id = genId({ prefix: 'board_' });
-    this.rows = this.initBoard();
+    this.initBoard();
     this.fleet = new Fleet();
   }
 
-  private initBoard(): ICell[][] {
-    const rows: ICell[][] = [];
-
+  private initBoard(): void {
+    this.rows = [];
     for (let i = 0; i < this.boardSize; i++) {
-      rows[i] = [];
+      this.rows[i] = [];
       for (let j = 0; j < this.boardSize; j++) {
-        rows[i].push({
+        this.rows[i].push({
           id: `${i}${j}`,
           coordinates: { x: i, y: j },
           isHit: false,
@@ -33,8 +32,6 @@ export class Board {
         });
       }
     }
-
-    return rows;
   }
 
   private setCoordiantesWithShip(coordinates: ICoordinate[], shipId): void {
