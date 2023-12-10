@@ -1,6 +1,7 @@
 import { Board } from '../Board/Board';
 import { IPlayer } from './Match.interface';
 import { genId } from '../nanoid';
+import { ICoordinate } from '../shared.interface';
 
 export class Match {
   public id: string;
@@ -19,7 +20,7 @@ export class Match {
     const id = genId({ prefix: 'player_' });
     const board = new Board();
     if (this.firstPlayer && this.secondPlayer) {
-      throw new Error('[Match/join] two players already set');
+      throw new Error('[Match/joinPlayer] two players already set');
     }
 
     if (!this.firstPlayer) {
@@ -52,5 +53,24 @@ export class Match {
     }
 
     return this.secondPlayer?.id === id ? this.secondPlayer : null;
+  }
+
+  getIsFirstPlayer(id: string): boolean {
+    if (id === this.firstPlayer?.id) {
+      return true;
+    }
+
+    return false;
+  }
+
+  setHit(playerId: string, coordinates: ICoordinate): void {
+    const isFirstPlayer = this.getIsFirstPlayer(playerId);
+    if (isFirstPlayer !== this.isFirstPlayerTurn) {
+      throw new Error('[Match/setHit] not players turn');
+    }
+
+    this[isFirstPlayer ? 'secondPlayer' : 'firstPlayer'].board.setHit(
+      coordinates,
+    );
   }
 }

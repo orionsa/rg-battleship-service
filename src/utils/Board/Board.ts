@@ -144,7 +144,7 @@ export class Board {
 
   public setHit(coordinate: ICoordinate): void {
     /**
-     * mark cell as hit and return true if the cell has a ship on it.
+     * mark cell as hit on both rows and tracking board.
      */
     const { x, y } = coordinate;
     if (this.rows[x][y].isHit) {
