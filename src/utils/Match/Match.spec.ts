@@ -1,5 +1,7 @@
 import { Match } from './Match';
 
+import { IPositionShipDto } from '../Fleet/Fleet.interface';
+
 describe('Match.ts', () => {
   describe('Match constructor', () => {
     it('should initiate Match class with players set to null and turn flag with boolean value', () => {
@@ -147,6 +149,40 @@ describe('Match.ts', () => {
       expect(() => {
         match.setHit(match.firstPlayer.id, { x: 0, y: 0 });
       }).toThrowError();
+    });
+  });
+
+  describe('setShipPosition method', () => {
+    it('set ship position on first player', () => {
+      const match = new Match();
+      match.joinPlayer();
+      const firstPlayerId = match.firstPlayer.id;
+      const params: IPositionShipDto = {
+        id: match.firstPlayer.board.fleet.ships[0].id,
+        startCoordinate: { x: 3, y: 4 },
+        direction: 'vertical',
+      };
+
+      expect(match.firstPlayer.board.fleet.ships[0].isPositioned).toBe(false);
+      match.setShipPosition(firstPlayerId, params);
+      expect(match.firstPlayer.board.fleet.ships[0].isPositioned).toBe(true);
+    });
+
+    it('set ship position on second player', () => {
+      const match = new Match();
+      match.joinPlayer();
+      match.joinPlayer();
+
+      const secondPlayerId = match.secondPlayer.id;
+      const params: IPositionShipDto = {
+        id: match.secondPlayer.board.fleet.ships[0].id,
+        startCoordinate: { x: 2, y: 2 },
+        direction: 'vertical',
+      };
+
+      expect(match.secondPlayer.board.fleet.ships[0].isPositioned).toBe(false);
+      match.setShipPosition(secondPlayerId, params);
+      expect(match.secondPlayer.board.fleet.ships[0].isPositioned).toBe(true);
     });
   });
 });

@@ -2,6 +2,7 @@ import { Board } from '../Board/Board';
 import { IPlayer } from './Match.interface';
 import { genId } from '../nanoid';
 import { ICoordinate } from '../shared.interface';
+import { IPositionShipDto } from '../Fleet/Fleet.interface';
 
 export class Match {
   public id: string;
@@ -36,18 +37,18 @@ export class Match {
     };
   }
 
-  changeTurn(): void {
+  public changeTurn(): void {
     this.isFirstPlayerTurn = !this.isFirstPlayerTurn;
   }
 
-  validateTurnById(id: string): boolean {
+  public validateTurnById(id: string): boolean {
     const { id: currentId } = this.isFirstPlayerTurn
       ? this.firstPlayer
       : this.secondPlayer;
     return currentId === id;
   }
 
-  getPlayer(id: string): IPlayer | null {
+  public getPlayer(id: string): IPlayer | null {
     if (this.firstPlayer?.id === id) {
       return this.firstPlayer;
     }
@@ -55,7 +56,7 @@ export class Match {
     return this.secondPlayer?.id === id ? this.secondPlayer : null;
   }
 
-  getIsFirstPlayer(id: string): boolean {
+  public getIsFirstPlayer(id: string): boolean {
     if (id === this.firstPlayer?.id) {
       return true;
     }
@@ -63,7 +64,7 @@ export class Match {
     return false;
   }
 
-  setHit(playerId: string, coordinates: ICoordinate): void {
+  public setHit(playerId: string, coordinates: ICoordinate): void {
     const isFirstPlayer = this.getIsFirstPlayer(playerId);
     if (isFirstPlayer !== this.isFirstPlayerTurn) {
       throw new Error('[Match/setHit] not players turn');
@@ -72,5 +73,12 @@ export class Match {
     this[isFirstPlayer ? 'secondPlayer' : 'firstPlayer'].board.setHit(
       coordinates,
     );
+  }
+
+  public setShipPosition(playerId: string, params: IPositionShipDto) {
+    const isFirstPlayer = this.getIsFirstPlayer(playerId);
+    this[
+      isFirstPlayer ? 'firstPlayer' : 'secondPlayer'
+    ].board.positionShipOnBoard(params);
   }
 }
