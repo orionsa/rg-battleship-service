@@ -4,6 +4,7 @@ import { Match } from '../utils/Match/Match';
 import { IJoinMatchRes } from './match-manager.interface';
 import { IPositionShipDto } from 'src/utils/Fleet/Fleet.interface';
 import { getMockMatch } from '../utils/helpers';
+import { ICoordinate } from '../utils/shared.interface';
 
 @Injectable()
 export class MatchManagerService {
@@ -15,7 +16,6 @@ export class MatchManagerService {
   }
 
   private getMatch(id: string): Match | null {
-    console.log('this.match', id, this.manager);
     if (this.manager.has(id)) {
       return this.manager.get(id);
     }
@@ -59,6 +59,15 @@ export class MatchManagerService {
       match.setShipPosition(playerId, params);
     } catch (error) {
       Logger.error(`[MatchManagerService/positionShip]: ${error}`);
+    }
+  }
+
+  public setHit(matchId: string, playerId: string, params: ICoordinate) {
+    try {
+      const match = this.getMatch(matchId);
+      match.setHit(playerId, params);
+    } catch (error) {
+      Logger.error(`[MatchManagerService/setHit]: ${error}`);
     }
   }
 

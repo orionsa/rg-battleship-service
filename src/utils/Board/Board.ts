@@ -173,19 +173,23 @@ export class Board {
      * will be removed after development is done
      */
     const colors = {
-      white: '\x1b[37m', // White
-      blue: '\x1b[34m', // Blue
-      orange: '\x1b[38;5;202m', // Orange
+      white: '\x1b[37m',
+      blue: '\x1b[34m',
+      orange: '\x1b[38;5;202m',
+      grey: '\x1b[90m',
     };
     let board = '';
     for (let i = 0; i < this.rows.length; i++) {
       for (let j = 0; j < this.rows[i].length; j++) {
-        if (this.rows[j][i].shipId) {
-          board += colors.blue + 'X ';
+        const char = this.rows[j][i].shipId ? 'X ' : 'O ';
+        if (this.rows[j][i].isHit) {
+          board += colors.orange + char;
+        } else if (this.rows[j][i].shipId) {
+          board += colors.blue + char;
         } else if (this.rows[j][i].borderShipIds.length) {
-          board += colors.orange + 'O ';
+          board += colors.grey + char;
         } else {
-          board += colors.white + 'O ';
+          board += colors.white + char;
         }
       }
       board += '\n';

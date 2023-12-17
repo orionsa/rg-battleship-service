@@ -276,6 +276,8 @@ describe('Board.ts', () => {
       }
       const board = new Board();
       positionShips(board);
+      board.setHit({ x: 4, y: 4 });
+      board.setHit({ x: 9, y: 9 });
       board.logBoardCellsWithColors();
     });
   });

@@ -11,6 +11,7 @@ import { IJoinMatchRes } from './match-manager.interface';
 import { IPositionShipDto } from 'src/utils/Fleet/Fleet.interface';
 import { IMatchPayload } from './match-manager.interface';
 import { kafkaConfig } from '../utils/kafkaConfig';
+import { ICoordinate } from '../utils/shared.interface';
 
 @Controller()
 export class MatchManagerController {
@@ -30,7 +31,7 @@ export class MatchManagerController {
         );
         break;
       case 'setHit':
-        console.log('setHit');
+        this.service.setHit(matchId, playerId, payload as ICoordinate);
         break;
       case 'devClearMatches':
         this.service.manager = new Map();
