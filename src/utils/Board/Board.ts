@@ -88,8 +88,12 @@ export class Board {
     const ship = this.fleet.getShip(id);
     const isInBounds =
       direction === 'vertical'
-        ? startCoordinate.y + ship.size < this.boardSize
-        : startCoordinate.x + ship.size < this.boardSize;
+        ? startCoordinate.y + ship.size <= this.boardSize
+        : startCoordinate.x + ship.size <= this.boardSize;
+
+    if (ship.isPositioned) {
+      this.removeShipFromBoard(ship.id);
+    }
 
     if (!isInBounds) {
       throw new Error('[Board/positionShipOnBoard]: ship out of bounds');

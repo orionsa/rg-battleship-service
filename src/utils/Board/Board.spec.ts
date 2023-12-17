@@ -62,7 +62,7 @@ describe('Board.ts', () => {
     it('should throw error if ship is out of bounds vetically', () => {
       const board = new Board();
 
-      const shipId = board.fleet.ships[0].id;
+      const shipId = board.fleet.ships[4].id;
       const startCoordinate = { x: 9, y: 9 };
       const direction = 'vertical';
 
@@ -75,12 +75,11 @@ describe('Board.ts', () => {
       const board = new Board();
 
       const shipId = board.fleet.ships[9].id;
-      const startCoordinate = { x: 6, y: 0 };
+      const startCoordinate = { x: 7, y: 0 };
       const direction = 'horizontal';
-
-      expect(() =>
-        board.positionShipOnBoard({ id: shipId, startCoordinate, direction }),
-      ).toThrowError();
+      expect(() => {
+        board.positionShipOnBoard({ id: shipId, startCoordinate, direction });
+      }).toThrowError();
     });
 
     it('should throw error if ship is overlapping with another ship', () => {
@@ -100,6 +99,24 @@ describe('Board.ts', () => {
             direction,
           });
         }).toThrowError();
+    });
+
+    it('should reposition ship if already positioned', () => {
+      const board = new Board();
+      const shipId = board.fleet.ships[9].id;
+      board.positionShipOnBoard({
+        id: shipId,
+        startCoordinate: { x: 1, y: 2 },
+        direction: 'vertical',
+      });
+
+      expect(board.fleet.ships[9].direction).toBe('vertical');
+      board.positionShipOnBoard({
+        id: shipId,
+        startCoordinate: { x: 1, y: 2 },
+        direction: 'horizontal',
+      });
+      expect(board.fleet.ships[9].direction).toBe('horizontal');
     });
   });
 

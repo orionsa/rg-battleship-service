@@ -20,13 +20,15 @@ describe('Ship.ts', () => {
   });
 
   describe('setPosition method', () => {
-    const ship = new Ship(2);
+    it('should set ship position ', () => {
+      const ship = new Ship(2);
 
-    expect(ship.isPositioned).toBe(false);
+      expect(ship.isPositioned).toBe(false);
 
-    ship.setPosition({ x: 0, y: 0 }, 'vertical');
+      ship.setPosition({ x: 0, y: 0 }, 'vertical');
 
-    expect(ship.isPositioned).toBe(true);
+      expect(ship.isPositioned).toBe(true);
+    });
   });
 
   describe('setHit method', () => {
