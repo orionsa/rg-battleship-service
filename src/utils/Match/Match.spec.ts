@@ -185,4 +185,23 @@ describe('Match.ts', () => {
       expect(match.secondPlayer.board.fleet.ships[0].isPositioned).toBe(true);
     });
   });
+  describe('removeShipFromBoard method', () => {
+    it('should unset ship position', () => {
+      const match = new Match();
+      match.joinPlayer();
+
+      const playerId = match.firstPlayer.id;
+      const shipId = match.firstPlayer.board.fleet.ships[0].id;
+      const params: IPositionShipDto = {
+        id: shipId,
+        startCoordinate: { x: 2, y: 2 },
+        direction: 'vertical',
+      };
+
+      match.setShipPosition(playerId, params);
+      expect(match.firstPlayer.board.fleet.ships[0].isPositioned).toBe(true);
+      match.removeShipFromBoard(playerId, shipId);
+      expect(match.firstPlayer.board.fleet.ships[0].isPositioned).toBe(false);
+    });
+  });
 });
