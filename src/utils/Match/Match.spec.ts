@@ -212,6 +212,9 @@ describe('Match.ts', () => {
 
       const playerId = match.firstPlayer.id;
       expect(match.firstPlayer.isReadyToStart).toBe(false);
+      match.firstPlayer.board.fleet.ships.forEach(
+        (s) => (s.isPositioned = true),
+      );
       match.setPlayerReadyStatus(playerId, true);
       expect(match.firstPlayer.isReadyToStart).toBe(true);
     });
@@ -223,6 +226,9 @@ describe('Match.ts', () => {
 
       const playerId = match.secondPlayer.id;
       expect(match.secondPlayer.isReadyToStart).toBe(false);
+      match.secondPlayer.board.fleet.ships.forEach(
+        (s) => (s.isPositioned = true),
+      );
       match.setPlayerReadyStatus(playerId, true);
       expect(match.secondPlayer.isReadyToStart).toBe(true);
     });
@@ -235,6 +241,12 @@ describe('Match.ts', () => {
       const firstPlayerId = match.firstPlayer.id;
       const secondPlayerId = match.secondPlayer.id;
       expect(match.isMatchRunning).toBe(false);
+      match.firstPlayer.board.fleet.ships.forEach(
+        (s) => (s.isPositioned = true),
+      );
+      match.secondPlayer.board.fleet.ships.forEach(
+        (s) => (s.isPositioned = true),
+      );
       match.setPlayerReadyStatus(firstPlayerId, true);
       match.setPlayerReadyStatus(secondPlayerId, true);
       expect(match.isMatchRunning).toBe(true);
@@ -246,6 +258,15 @@ describe('Match.ts', () => {
       match.isMatchRunning = true;
       expect(() => {
         match.setPlayerReadyStatus(match.firstPlayer.id, false);
+      }).toThrowError();
+    });
+
+    it('should throw an error if try to change status to true and not all ships are positioned', () => {
+      const match = new Match();
+      match.joinPlayer();
+
+      expect(() => {
+        match.setPlayerReadyStatus(match.firstPlayer.id, true);
       }).toThrowError();
     });
   });

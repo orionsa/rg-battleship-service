@@ -99,10 +99,12 @@ export class Match {
     }
 
     const player = this.getPlayer(playerId);
-    player.isReadyToStart = status;
-
-    if (this.firstPlayer.isReadyToStart && this.secondPlayer?.isReadyToStart) {
-      this.isMatchRunning = true;
+    if (status && !player.board.fleet._isAllPositioned) {
+      throw new Error('[Match/setPlayerReadyStatus] not all ships positioned');
     }
+
+    player.isReadyToStart = status;
+    this.isMatchRunning =
+      this.firstPlayer.isReadyToStart && this.secondPlayer?.isReadyToStart;
   }
 }

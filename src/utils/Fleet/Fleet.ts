@@ -18,6 +18,10 @@ export class Fleet {
     });
   }
 
+  get _isAllPositioned(): boolean {
+    return this.ships.every((s) => s.isPositioned);
+  }
+
   public getShip(shipId: string): Ship {
     return this.ships.filter(({ id }) => id === shipId)[0];
   }
