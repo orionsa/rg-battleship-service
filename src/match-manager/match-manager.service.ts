@@ -80,6 +80,15 @@ export class MatchManagerService {
     match.removeShipFromBoard(playerId, shipId);
   }
 
+  public setPlayerStatus(
+    matchId: string,
+    playerId: string,
+    status: boolean,
+  ): void {
+    const match = this.getMatch(matchId);
+    match.setPlayerReadyStatus(playerId, status);
+  }
+
   public logBoards(): void {
     console.log('----- Logging Boards -----');
     this.manager.forEach((match) => {

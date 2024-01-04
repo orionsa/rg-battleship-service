@@ -1,5 +1,5 @@
 import { Ship } from './Ship';
-import { TSize, IPositionShipDto } from './Fleet.interface';
+import { TSize } from './Fleet.interface';
 import { genId } from '../nanoid';
 
 export class Fleet {
@@ -32,7 +32,6 @@ export class Fleet {
         const ship = new Ship(i as TSize);
 
         this.ships.push(ship);
-        // this.manager.set(ship.id, { isPositioned: false });
       }
     }
   }

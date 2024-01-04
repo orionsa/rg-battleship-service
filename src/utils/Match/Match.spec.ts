@@ -119,6 +119,7 @@ describe('Match.ts', () => {
       const match = new Match();
       match.joinPlayer();
       match.joinPlayer();
+      match.isMatchRunning = true;
       match.isFirstPlayerTurn = true;
 
       const stub = jest.spyOn(match.secondPlayer.board, 'setHit');
@@ -132,6 +133,7 @@ describe('Match.ts', () => {
       const match = new Match();
       match.joinPlayer();
       match.joinPlayer();
+      match.isMatchRunning = true;
       match.isFirstPlayerTurn = false;
 
       const stub = jest.spyOn(match.firstPlayer.board, 'setHit');
@@ -146,9 +148,19 @@ describe('Match.ts', () => {
       match.joinPlayer();
       match.joinPlayer();
       match.isFirstPlayerTurn = false;
+      match.isMatchRunning = true;
       expect(() => {
         match.setHit(match.firstPlayer.id, { x: 0, y: 0 });
-      }).toThrowError();
+      }).toThrowError('[Match/setHit] not players turn');
+    });
+
+    it('should throw an Error if trying to setHit before match started', () => {
+      const match = new Match();
+      match.joinPlayer();
+      match.isFirstPlayerTurn = true;
+      expect(() => {
+        match.setHit(match.firstPlayer.id, { x: 0, y: 0 });
+      }).toThrowError('[Match/setHit] match not started');
     });
   });
 
@@ -184,6 +196,22 @@ describe('Match.ts', () => {
       match.setShipPosition(secondPlayerId, params);
       expect(match.secondPlayer.board.fleet.ships[0].isPositioned).toBe(true);
     });
+
+    it('should throw an error if trying to set position after match started', () => {
+      const match = new Match();
+      match.joinPlayer();
+      const firstPlayerId = match.firstPlayer.id;
+      const params: IPositionShipDto = {
+        id: match.firstPlayer.board.fleet.ships[0].id,
+        startCoordinate: { x: 3, y: 4 },
+        direction: 'vertical',
+      };
+      match.isMatchRunning = true;
+
+      expect(() => {
+        match.setShipPosition(firstPlayerId, params);
+      }).toThrowError();
+    });
   });
   describe('removeShipFromBoard method', () => {
     it('should unset ship position', () => {
@@ -202,6 +230,27 @@ describe('Match.ts', () => {
       expect(match.firstPlayer.board.fleet.ships[0].isPositioned).toBe(true);
       match.removeShipFromBoard(playerId, shipId);
       expect(match.firstPlayer.board.fleet.ships[0].isPositioned).toBe(false);
+    });
+
+    it('should throw an error if trying to remove position after match started', () => {
+      const match = new Match();
+      match.joinPlayer();
+      const firstPlayerId = match.firstPlayer.id;
+      const params: IPositionShipDto = {
+        id: match.firstPlayer.board.fleet.ships[0].id,
+        startCoordinate: { x: 3, y: 4 },
+        direction: 'vertical',
+      };
+      match.setShipPosition(firstPlayerId, params);
+
+      match.isMatchRunning = true;
+
+      expect(() => {
+        match.removeShipFromBoard(
+          firstPlayerId,
+          match.firstPlayer.board.fleet.ships[0].id,
+        );
+      }).toThrowError();
     });
   });
 

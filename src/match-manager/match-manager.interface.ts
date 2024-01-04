@@ -5,7 +5,8 @@ export type TActionType =
   | 'joinMatch'
   | 'positionShip'
   | 'setHit'
-  | 'removeShip';
+  | 'removeShip'
+  | 'setPlayerStatus';
 export type TDevActionType =
   | 'devClearMatches'
   | 'devLogMatches'
@@ -15,7 +16,7 @@ export interface IMatchPayload {
   action: TActionType | TDevActionType;
   matchId: string;
   playerId: string;
-  payload?: IPositionShipDto | ICoordinate | string;
+  payload?: IPositionShipDto | ICoordinate | string | boolean;
 }
 
 export interface IJoinMatchRes {

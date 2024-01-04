@@ -36,6 +36,9 @@ export class MatchManagerController {
       case 'removeShip':
         this.service.removeShipFromBoard(matchId, playerId, payload as string);
         break;
+      case 'setPlayerStatus':
+        this.service.setPlayerStatus(matchId, playerId, payload as boolean);
+        break;
       case 'devClearMatches':
         this.service.manager = new Map();
         break;
