@@ -204,4 +204,49 @@ describe('Match.ts', () => {
       expect(match.firstPlayer.board.fleet.ships[0].isPositioned).toBe(false);
     });
   });
+
+  describe('setPlayerReadyStatus method', () => {
+    it('should set first player status to ready', () => {
+      const match = new Match();
+      match.joinPlayer();
+
+      const playerId = match.firstPlayer.id;
+      expect(match.firstPlayer.isReadyToStart).toBe(false);
+      match.setPlayerReadyStatus(playerId, true);
+      expect(match.firstPlayer.isReadyToStart).toBe(true);
+    });
+
+    it('should set second player status to ready', () => {
+      const match = new Match();
+      match.joinPlayer();
+      match.joinPlayer();
+
+      const playerId = match.secondPlayer.id;
+      expect(match.secondPlayer.isReadyToStart).toBe(false);
+      match.setPlayerReadyStatus(playerId, true);
+      expect(match.secondPlayer.isReadyToStart).toBe(true);
+    });
+
+    it('should change match.isMatchRunning flag to true if both players are ready', () => {
+      const match = new Match();
+      match.joinPlayer();
+      match.joinPlayer();
+
+      const firstPlayerId = match.firstPlayer.id;
+      const secondPlayerId = match.secondPlayer.id;
+      expect(match.isMatchRunning).toBe(false);
+      match.setPlayerReadyStatus(firstPlayerId, true);
+      match.setPlayerReadyStatus(secondPlayerId, true);
+      expect(match.isMatchRunning).toBe(true);
+    });
+
+    it('should throw an error if try to change status after game started', () => {
+      const match = new Match();
+      match.joinPlayer();
+      match.isMatchRunning = true;
+      expect(() => {
+        match.setPlayerReadyStatus(match.firstPlayer.id, false);
+      }).toThrowError();
+    });
+  });
 });

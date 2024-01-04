@@ -9,12 +9,14 @@ export class Match {
   public firstPlayer: IPlayer | null;
   public secondPlayer: IPlayer | null;
   public isFirstPlayerTurn: boolean;
+  public isMatchRunning: boolean;
 
   constructor() {
     this.id = genId({ prefix: 'match_' });
     this.firstPlayer = null;
     this.secondPlayer = null;
     this.isFirstPlayerTurn = Math.random() < 0.5;
+    this.isMatchRunning = false;
   }
 
   joinPlayer(): void {
@@ -28,12 +30,14 @@ export class Match {
       this.firstPlayer = {
         id,
         board,
+        isReadyToStart: false,
       };
       return;
     }
     this.secondPlayer = {
       id,
       board,
+      isReadyToStart: false,
     };
   }
 
@@ -75,15 +79,30 @@ export class Match {
     );
   }
 
-  public setShipPosition(playerId: string, params: IPositionShipDto) {
+  public setShipPosition(playerId: string, params: IPositionShipDto): void {
     const isFirstPlayer = this.getIsFirstPlayer(playerId);
     this[
       isFirstPlayer ? 'firstPlayer' : 'secondPlayer'
     ].board.positionShipOnBoard(params);
   }
 
-  public removeShipFromBoard(playerId: string, shipId: string) {
+  public removeShipFromBoard(playerId: string, shipId: string): void {
     const player = this.getPlayer(playerId);
     player.board.removeShipFromBoard(shipId);
+  }
+
+  public setPlayerReadyStatus(playerId: string, status: boolean): void {
+    if (this.isMatchRunning) {
+      throw new Error(
+        '[Match/setPlayerReadyStatus] unable to change player status after game started',
+      );
+    }
+
+    const player = this.getPlayer(playerId);
+    player.isReadyToStart = status;
+
+    if (this.firstPlayer.isReadyToStart && this.secondPlayer?.isReadyToStart) {
+      this.isMatchRunning = true;
+    }
   }
 }
