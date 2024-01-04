@@ -81,4 +81,9 @@ export class Match {
       isFirstPlayer ? 'firstPlayer' : 'secondPlayer'
     ].board.positionShipOnBoard(params);
   }
+
+  public removeShipFromBoard(playerId: string, shipId: string) {
+    const player = this.getPlayer(playerId);
+    player.board.removeShipFromBoard(shipId);
+  }
 }

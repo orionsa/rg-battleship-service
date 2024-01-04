@@ -33,6 +33,9 @@ export class MatchManagerController {
       case 'setHit':
         this.service.setHit(matchId, playerId, payload as ICoordinate);
         break;
+      case 'removeShip':
+        this.service.removeShipFromBoard(matchId, playerId, payload as string);
+        break;
       case 'devClearMatches':
         this.service.manager = new Map();
         break;

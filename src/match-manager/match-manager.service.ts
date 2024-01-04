@@ -71,6 +71,15 @@ export class MatchManagerService {
     }
   }
 
+  public removeShipFromBoard(
+    matchId: string,
+    playerId: string,
+    shipId: string,
+  ): void {
+    const match = this.getMatch(matchId);
+    match.removeShipFromBoard(playerId, shipId);
+  }
+
   public logBoards(): void {
     console.log('----- Logging Boards -----');
     this.manager.forEach((match) => {

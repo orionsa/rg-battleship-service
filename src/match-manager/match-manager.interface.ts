@@ -1,7 +1,11 @@
 import { IPositionShipDto } from '../utils/Fleet/Fleet.interface';
 import { ICoordinate } from 'src/utils/shared.interface';
 
-export type TActionType = 'joinMatch' | 'positionShip' | 'setHit';
+export type TActionType =
+  | 'joinMatch'
+  | 'positionShip'
+  | 'setHit'
+  | 'removeShip';
 export type TDevActionType =
   | 'devClearMatches'
   | 'devLogMatches'
