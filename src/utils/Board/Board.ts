@@ -1,4 +1,4 @@
-import { IBoardCell, ITrackingBoardCell } from './Board.interface';
+import { TBoard, TTrackingBoard } from './Board.interface';
 import { genId } from '../nanoid';
 import { BOARD_SIZE } from '../constants';
 import { Fleet } from '../Fleet/Fleet';
@@ -9,9 +9,9 @@ import { IPositionShipDto } from '../Fleet/Fleet.interface';
 export class Board {
   private readonly boardSize = BOARD_SIZE;
   id: string;
-  rows: IBoardCell[][];
+  rows: TBoard;
   fleet: Fleet;
-  trackingBoard: ITrackingBoardCell[][];
+  trackingBoard: TTrackingBoard;
 
   constructor() {
     this.id = genId({ prefix: 'board_' });
@@ -165,6 +165,11 @@ export class Board {
       ship.setHit({ x, y });
     }
     return;
+  }
+
+  public hasShip(coor: ICoordinate): boolean {
+    const { x, y } = coor;
+    return !!this.rows[x][y].shipId;
   }
 
   public logBoardCellsWithColors(): void {

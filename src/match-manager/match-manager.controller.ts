@@ -20,7 +20,7 @@ export class MatchManagerController {
   constructor(private readonly service: MatchManagerService) {}
 
   @EventPattern('bs_game.action')
-  handleGameAction(@Payload() data: IMatchPayload): void {
+  handleGameAction(@Payload() data: IMatchPayload): any {
     const { action, payload, playerId, matchId } = data;
     switch (action) {
       case 'positionShip':
@@ -31,8 +31,12 @@ export class MatchManagerController {
         );
         break;
       case 'setHit':
-        this.service.setHit(matchId, playerId, payload as ICoordinate);
-        break;
+        const response = this.service.setHit(
+          matchId,
+          playerId,
+          payload as ICoordinate,
+        );
+        return response;
       case 'removeShip':
         this.service.removeShipFromBoard(matchId, playerId, payload as string);
         break;

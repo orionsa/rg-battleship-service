@@ -68,7 +68,7 @@ export class Match {
     return false;
   }
 
-  public setHit(playerId: string, coordinates: ICoordinate): void {
+  public setHit(playerId: string, coordinates: ICoordinate): boolean {
     if (!this.isMatchRunning) {
       throw new Error('[Match/setHit] match not started');
     }
@@ -78,9 +78,11 @@ export class Match {
       throw new Error('[Match/setHit] not players turn');
     }
 
-    this[isFirstPlayer ? 'secondPlayer' : 'firstPlayer'].board.setHit(
-      coordinates,
-    );
+    const playerBoard =
+      this[isFirstPlayer ? 'secondPlayer' : 'firstPlayer'].board;
+    playerBoard.setHit(coordinates);
+
+    return playerBoard.hasShip(coordinates);
   }
 
   public setShipPosition(playerId: string, params: IPositionShipDto): void {
@@ -116,5 +118,13 @@ export class Match {
     player.isReadyToStart = status;
     this.isMatchRunning =
       this.firstPlayer.isReadyToStart && this.secondPlayer?.isReadyToStart;
+  }
+
+  public getOpponent(id: string): string {
+    if (this.firstPlayer.id === id) {
+      return this.secondPlayer?.id;
+    }
+
+    return this.firstPlayer.id;
   }
 }

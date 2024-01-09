@@ -249,6 +249,30 @@ describe('Board.ts', () => {
     });
   });
 
+  describe('hasShip method', () => {
+    it('should return true if cell has ship', () => {
+      const board = new Board();
+
+      const ship = board.fleet.ships[0];
+
+      board.positionShipOnBoard({
+        id: ship.id,
+        startCoordinate: { x: 0, y: 0 },
+        direction: 'horizontal',
+      });
+
+      const hasShip = board.hasShip({ x: 0, y: 0 });
+      expect(hasShip).toBe(true);
+    });
+
+    it('should return false if cell has no ship', () => {
+      const board = new Board();
+
+      const hasShip = board.hasShip({ x: 0, y: 0 });
+      expect(hasShip).toBe(false);
+    });
+  });
+
   describe('logBoard method', () => {
     it('should log board with ships', () => {
       const positions = [

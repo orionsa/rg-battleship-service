@@ -14,3 +14,6 @@ export interface IBoardCell extends ICell {
 export interface ITrackingBoardCell extends ICell {
   hasShip: boolean;
 }
+
+export type TBoard = IBoardCell[][];
+export type TTrackingBoard = ITrackingBoardCell[][];

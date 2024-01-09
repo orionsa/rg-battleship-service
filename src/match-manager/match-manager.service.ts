@@ -62,10 +62,16 @@ export class MatchManagerService {
     }
   }
 
-  public setHit(matchId: string, playerId: string, params: ICoordinate) {
+  public setHit(
+    matchId: string,
+    playerId: string,
+    params: ICoordinate,
+  ): { hasShip: boolean; opponentId: string } {
     try {
       const match = this.getMatch(matchId);
-      match.setHit(playerId, params);
+      const hasShip = match.setHit(playerId, params);
+      const opponentId = match.getOpponent(playerId);
+      return { hasShip, opponentId };
     } catch (error) {
       Logger.error(`[MatchManagerService/setHit]: ${error}`);
     }
